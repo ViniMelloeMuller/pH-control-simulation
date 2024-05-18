@@ -43,7 +43,7 @@ def main():
 	# Linear MPC
 	# Control loop - SERVO
 	k=1
-	t_sim = np.loadtxt("results/PID/PID.csv", delimiter=",")[:,0]
+	t_sim = np.loadtxt("results/PID/PID_servo.csv", delimiter=",")[:,0]
 	dt = t_sim[1]-t_sim[0]
 
 	X_lin = np.zeros((t_sim.shape[0], 2))
@@ -83,7 +83,7 @@ def main():
 ############################################################################
 
 	k=1
-	t_sim = np.loadtxt("results/PID/PID.csv", delimiter=",")[:,0]
+	t_sim = np.loadtxt("results/PID/PID_reg.csv", delimiter=",")[:,0]
 	dt = t_sim[1]-t_sim[0]
 
 	X_lin = np.zeros((t_sim.shape[0], 2))

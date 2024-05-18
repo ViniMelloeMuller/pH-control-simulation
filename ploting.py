@@ -44,7 +44,7 @@ plt.savefig("results/PID/PID_servo_full.pdf", bbox_inches="tight")
 
 
 #LINEAR
-LIN_data = np.loadtxt("results/LIN/LIN.csv",delimiter=",")[:, 1:]
+LIN_data = np.loadtxt("results/LIN/LIN_servo.csv",delimiter=",")[:, 1:]
 U_LIN = LIN_data[:, :-1]
 Y_LIN = LIN_data[:,  -1]
 
