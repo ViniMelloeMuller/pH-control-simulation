@@ -280,7 +280,7 @@ def main():
     dt = 0.5
     k = 8
     noise_scale = 0.05
-    t_sim = np.arange(0, 20000 + dt, dt)
+    t_sim = np.arange(0, 50000 + dt, dt)
 
     X_PID = np.zeros((t_sim.shape[0], 2))
     U_PID = np.zeros((t_sim.shape[0], 2))
@@ -290,8 +290,8 @@ def main():
     ysp = np.ones(t_sim.shape[0])
 
     for ki in range(t_sim.shape[0]):
-        if ki % int(100 / dt) == 0:
-            ysp[ki:] = np.random.uniform(low=6.5, high=8.5)
+        if ki % int(150 / dt) == 0:
+            ysp[ki:] = np.random.uniform(low=6.0, high=9.5)
 
 
     # np.savetxt("ysp2.csv", ysp, delimiter=",");
@@ -346,7 +346,7 @@ def main():
 
     print("GENERATING VALIDATION/TEST DATASET")
 
-    t_sim = np.arange(0, 10000 + dt, dt)
+    t_sim = np.arange(0, 15000 + dt, dt)
 
     X_PID = np.zeros((t_sim.shape[0], 2))
     U_PID = np.zeros((t_sim.shape[0], 2))

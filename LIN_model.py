@@ -62,7 +62,7 @@ def get_offline_score(k, model):
     U_off[:, :] = [u1ss, u2ss]
     
     U_off[20:, 0] *= 1.25
-    U_off[100:, 1] *= 205
+    U_off[100:, 1] *= 20
 
     for n in range(0, t_sim.shape[0] - 1):
         X_off[n + 1, :] = x_next(X_off[n], U_off[n], dt)
@@ -139,7 +139,7 @@ def main():
     )
     # chosen_model = int(input("Digite o Modelo Desejado: "))
     with open("models/LIN_model.pkl", "wb") as f:
-        pickle.dump(models[1], f)
+        pickle.dump(models[0], f)
     print("MODEL SAVED TO DEVICE")
 
 

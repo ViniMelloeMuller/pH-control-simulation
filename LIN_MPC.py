@@ -44,7 +44,7 @@ def MPC_optimization_Linear(y0, u0, nh, ysp, model=linear_model):
 def main():
     # Linear MPC
     # Control loop - SERVO
-    k = 2
+    k = 1
     t_sim = np.loadtxt("results/PID/PID_servo.csv", delimiter=",")[:, 0]
     dt = t_sim[1] - t_sim[0]
 
