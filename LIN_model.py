@@ -50,17 +50,17 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 def get_offline_score(k, model):
     dt = 0.5
     t_sim = np.arange(0, 100, dt)
-    
+
     X_off = np.zeros((t_sim.shape[0], 2))
     U_off = np.zeros((t_sim.shape[0], 2))
     Y_off = np.zeros(t_sim.shape[0])
     Y_pred = np.zeros(t_sim.shape[0])
-    
+
     X_off[0, :] = [Wa, Wb]
     Y_off[0] = y_f(X_off[0], x0=7.0)
     Y_pred[0] = Y_off[0]
     U_off[:, :] = [u1ss, u2ss]
-    
+
     U_off[20:, 0] *= 1.25
     U_off[100:, 1] *= 20
 
