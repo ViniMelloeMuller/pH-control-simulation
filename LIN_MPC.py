@@ -30,7 +30,7 @@ def MPC_optimization_Linear(y0, u0, nh, ysp, model=linear_model):
             y_pred[l - k] = model.predict(model_input)[0]
             y_total[l] = y_pred[l - k]
 
-        Q, R = 100, 3e-0
+        Q, R = 1000, 3e-0
         ISE = Q * np.sum((y_pred - ysp) ** 2)
         EC = R * np.sum((np.diff(u_total[:, 0])) ** 2)
         return ISE + EC
@@ -70,7 +70,7 @@ def main():
     for n in tqdm(range(10, t_sim.shape[0] - 1)):
         start = time.process_time()
         U = MPC_optimization_Linear(
-            y0=Y_lin[n - k : n], u0=U_lin[n - k : n], nh=5, ysp=ysp[n]
+            y0=Y_lin[n - k : n], u0=U_lin[n - k : n], nh=6, ysp=ysp[n]
         )
         U_lin[n, 0] = U
         X_lin[n + 1, :] = x_next(X_lin[n], U_lin[n], dt)
@@ -90,7 +90,7 @@ def main():
 
     ############################################################################
 
-    k = 2
+    k = 1
     t_sim = np.loadtxt("results/PID/PID_reg.csv", delimiter=",")[:, 0]
     dt = t_sim[1] - t_sim[0]
 

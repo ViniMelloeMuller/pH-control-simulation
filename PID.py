@@ -299,7 +299,7 @@ def main():
     U_PID[:, :] = [u1ss, u2ss]
 
     for ki in range(t_sim.shape[0]):
-        if ki % int(150 / dt) == 0:
+        if ki % int(200 / dt) == 0:
             U_PID[ki:, 1] = np.random.uniform(low=0.0, high=5.0)
 
     X_PID[0, :] = [Wa, Wb]

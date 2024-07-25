@@ -46,40 +46,32 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 
     return agg
 
-
-def get_offline_score(k, model):
+def get_offline_error(k, model):
     dt = 0.5
-    t_sim = np.arange(0, 100, dt)
 
-    X_off = np.zeros((t_sim.shape[0], 2))
-    U_off = np.zeros((t_sim.shape[0], 2))
-    Y_off = np.zeros(t_sim.shape[0])
-    Y_pred = np.zeros(t_sim.shape[0])
-
-    X_off[0, :] = [Wa, Wb]
-    Y_off[0] = y_f(X_off[0], x0=7.0)
+    test = dataset_test[200:500]
+    t_sim = t2[200:500]
+    
+    Y_off = test[:, -1]
+    Y_pred = np.empty(t_sim.shape[0])
+    
     Y_pred[0] = Y_off[0]
-    U_off[:, :] = [u1ss, u2ss]
-
-    U_off[20:, 0] *= 1.25
-    U_off[100:, 1] *= 20
-
-    for n in range(0, t_sim.shape[0] - 1):
-        X_off[n + 1, :] = x_next(X_off[n], U_off[n], dt)
-        Y_off[n + 1] = y_f(X_off[n + 1], x0=Y_off[n])
-
+    U_off = test[:, :-1]
+    
     Y_pred[: k + 1] = Y_off[: k + 1]
-    # print(Y_pred)
-
+    
     for n in range(k, t_sim.shape[0] - 1):
         data_input = np.column_stack((U_off[n - k : n], Y_pred[n - k : n]))
         model_input = series_to_supervised(data_input, n_in=k - 1).values
         Y_pred[n + 1] = model.predict(model_input)[0]
 
     score = mse(Y_off, Y_pred)
-    return score
+    return score, (Y_off, Y_pred)
 
 
+dataset_test = np.loadtxt("data/PID_data_test.csv", delimiter=",")
+t2 = dataset_test[:,0]
+dataset_test = dataset_test[:, 1:]
 def main():
     print("LOADING DATA")
     dataset_treino = np.loadtxt("data/PID_data.csv", delimiter=",")
@@ -123,7 +115,8 @@ def main():
         MSEs_teste.append(mse(Y2, yy2))
         R2_treino.append(r21)
         R2_teste.append(r22)
-        MSE_OFFLINE.append(get_offline_score(k, model))
+        offline_score, data = get_offline_error(k, model)
+        MSE_OFFLINE.append(offline_score)
 
     print("DONE")
     scores = {
@@ -139,9 +132,16 @@ def main():
     )
     # chosen_model = int(input("Digite o Modelo Desejado: "))
     with open("models/LIN_model.pkl", "wb") as f:
-        pickle.dump(models[0], f)
+        pickle.dump(models[1], f)
     print("MODEL SAVED TO DEVICE")
 
 
 if __name__ == "__main__":
     main()
+    with open("models/Lin_model.pkl", "rb") as f:
+        model = pickle.load(f)
+
+    _ , data = get_offline_error(2, model)
+    plt.plot(data[0], c='k')
+    plt.plot(data[1], c='r')
+    plt.show()
