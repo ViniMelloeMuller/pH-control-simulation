@@ -30,7 +30,7 @@ def MPC_optimization_Linear(y0, u0, nh, ysp, model=linear_model):
             y_pred[l - k] = model.predict(model_input)[0]
             y_total[l] = y_pred[l - k]
 
-        Q, R = 1000, 3e-0
+        Q, R = 1000, 4e-0
         ISE = Q * np.sum((y_pred - ysp) ** 2)
         EC = R * np.sum((np.diff(u_total[:, 0])) ** 2)
         return ISE + EC
@@ -44,7 +44,7 @@ def MPC_optimization_Linear(y0, u0, nh, ysp, model=linear_model):
 def main():
     # Linear MPC
     # Control loop - SERVO
-    k = 1
+    k = 2
     t_sim = np.loadtxt("results/PID/PID_servo.csv", delimiter=",")[:, 0]
     dt = t_sim[1] - t_sim[0]
 
@@ -90,7 +90,7 @@ def main():
 
     ############################################################################
 
-    k = 1
+    k = 2
     t_sim = np.loadtxt("results/PID/PID_reg.csv", delimiter=",")[:, 0]
     dt = t_sim[1] - t_sim[0]
 

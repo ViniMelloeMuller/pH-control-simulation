@@ -1,6 +1,6 @@
-nhidden: 15
+nhidden: 45
 activation1: tanh
-window_size: 3
-l1: 0.0001353120031874206
-l2: 4.4829989365843523e-07
-dropout_rate: 0.23
+window_size: 4
+l1: 1.0811657247330256e-06
+l2: 1.3688564021163353e-06
+dropout_rate: 0.15
