@@ -66,7 +66,7 @@ def get_offline_error(k, model):
         Y_pred[n + 1] = model.predict(model_input)[0]
 
     score = mse(Y_off, Y_pred)
-    return score, (Y_off, Y_pred)
+    return score, np.column_stack((Y_off, Y_pred))
 
 
 dataset_test = np.loadtxt("data/PID_data_test.csv", delimiter=",")
@@ -142,6 +142,7 @@ if __name__ == "__main__":
         model = pickle.load(f)
 
     _ , data = get_offline_error(2, model)
-    plt.plot(data[0], c='k')
-    plt.plot(data[1], c='r')
+    np.savetxt("results/LIN/offline.csv", data, delimiter=",")
+    plt.plot(data[:,0], c='k')
+    plt.plot(data[:,1], c='r')
     plt.show()
