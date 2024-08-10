@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.optimize import fsolve, minimize, differential_evolution
 from pandas import DataFrame, concat
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error as mse
@@ -46,20 +45,21 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 
     return agg
 
+
 def get_offline_error(k, model):
     dt = 0.5
 
     test = dataset_test[200:500]
     t_sim = t2[200:500]
-    
+
     Y_off = test[:, -1]
     Y_pred = np.empty(t_sim.shape[0])
-    
+
     Y_pred[0] = Y_off[0]
     U_off = test[:, :-1]
-    
+
     Y_pred[: k + 1] = Y_off[: k + 1]
-    
+
     for n in range(k, t_sim.shape[0] - 1):
         data_input = np.column_stack((U_off[n - k : n], Y_pred[n - k : n]))
         model_input = series_to_supervised(data_input, n_in=k - 1).values
@@ -70,17 +70,14 @@ def get_offline_error(k, model):
 
 
 dataset_test = np.loadtxt("data/PID_data_test.csv", delimiter=",")
-t2 = dataset_test[:,0]
+t2 = dataset_test[:, 0]
 dataset_test = dataset_test[:, 1:]
+
+
 def main():
     print("LOADING DATA")
     dataset_treino = np.loadtxt("data/PID_data.csv", delimiter=",")
     dataset_teste = np.loadtxt("data/PID_data_test.csv", delimiter=",")
-
-    t = dataset_treino[:, 0]
-    t2 = dataset_teste[:, 0]
-    dt = t[1] - t[0]
-
     dataset_treino = dataset_treino[:, 1:]
     dataset_teste = dataset_teste[:, 1:]
 
@@ -141,8 +138,8 @@ if __name__ == "__main__":
     with open("models/Lin_model.pkl", "rb") as f:
         model = pickle.load(f)
 
-    _ , data = get_offline_error(2, model)
+    _, data = get_offline_error(2, model)
     np.savetxt("results/LIN/offline.csv", data, delimiter=",")
-    plt.plot(data[:,0], c='k')
-    plt.plot(data[:,1], c='r')
+    plt.plot(data[:, 0], c="k")
+    plt.plot(data[:, 1], c="r")
     plt.show()

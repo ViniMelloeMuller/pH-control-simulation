@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from PID import *
 
+
 def get_metrics(data):
     """
     Get the metrics beased on a dataset resulting from the
@@ -19,6 +20,7 @@ def get_metrics(data):
     EC = np.sum(np.abs(np.diff(U_data[:, 0])) * dt)
 
     return [IAE, ITAE, EC]
+
 
 plt.rcParams["font.family"] = "Times New Roman"
 plt.rcParams["font.size"] = 9
@@ -206,47 +208,55 @@ LIN_reg = np.loadtxt("results/LIN/LIN_reg.csv", delimiter=",")[:, 1:]
 GRU_reg = np.loadtxt("results/GRU/GRU_reg.csv", delimiter=",")[:, 1:]
 
 servo_df = {
-    "PID":get_metrics(PID_servo),
-    "LIN":get_metrics(LIN_servo),
-    "GRU":get_metrics(GRU_servo),
+    "PID": get_metrics(PID_servo),
+    "LIN": get_metrics(LIN_servo),
+    "GRU": get_metrics(GRU_servo),
 }
 
 reg_df = {
-    "PID":get_metrics(PID_reg),
-    "LIN":get_metrics(LIN_reg),
-    "GRU":get_metrics(GRU_reg),
+    "PID": get_metrics(PID_reg),
+    "LIN": get_metrics(LIN_reg),
+    "GRU": get_metrics(GRU_reg),
 }
 index = ["IAE", "ITAE", "EC"]
 servo_df = pd.DataFrame(servo_df, index=index).T
 reg_df = pd.DataFrame(reg_df, index=index).T
 
-servo_df_rel = servo_df.apply(lambda row: (row - servo_df.loc["PID"]) / servo_df.loc["PID"] * 100, axis=1)
-reg_df_rel = reg_df.apply(lambda row: (row - reg_df.loc["PID"]) / reg_df.loc["PID"] * 100, axis=1)
+servo_df_rel = servo_df.apply(
+    lambda row: (row - servo_df.loc["PID"]) / servo_df.loc["PID"] * 100, axis=1
+)
+reg_df_rel = reg_df.apply(
+    lambda row: (row - reg_df.loc["PID"]) / reg_df.loc["PID"] * 100, axis=1
+)
 
-servo_df_rel.columns =  [string + " (%)" for string in index]
-reg_df_rel.columns =  [string + " (%)" for string in index]
+servo_df_rel.columns = [string + " (%)" for string in index]
+reg_df_rel.columns = [string + " (%)" for string in index]
 
-fig, ax = plt.subplots(1, 2, figsize=(10,5), sharey=True)
+fig, ax = plt.subplots(1, 2, figsize=(10, 5), sharey=True)
 colors = ["white", "grey", "black"]
 
 ax[0].set_title("Servo")
-ax[0].axhline(0, c='k', lw=2)
-servo_df_rel.loc[["LIN", "GRU"]].plot(kind="bar", ax=ax[0], edgecolor='black', color=colors)
-ax[0].grid(axis='y', ls='--')
+ax[0].axhline(0, c="k", lw=2)
+servo_df_rel.loc[["LIN", "GRU"]].plot(
+    kind="bar", ax=ax[0], edgecolor="black", color=colors
+)
+ax[0].grid(axis="y", ls="--")
 ax[0].legend_.remove()
 ax[0].set_xticklabels(["LIN", "GRU"], rotation=0)
 
 ax[1].set_title("Regulatory")
-ax[1].axhline(0, c='k', lw=2)
+ax[1].axhline(0, c="k", lw=2)
 
-reg_df_rel.loc[["LIN", "GRU"]].plot(kind="bar", ax=ax[1], edgecolor='black', color=colors)
-ax[1].grid(axis='y', ls='--')
+reg_df_rel.loc[["LIN", "GRU"]].plot(
+    kind="bar", ax=ax[1], edgecolor="black", color=colors
+)
+ax[1].grid(axis="y", ls="--")
 ax[1].legend_.remove()
 ax[1].set_xticklabels(["LIN", "GRU"], rotation=0)
-ax[1].set_yticks(np.arange(-100, 100+10, 10))
+ax[1].set_yticks(np.arange(-100, 100 + 10, 10))
 
 handles, labels = ax[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc='upper center', ncol=3)
+fig.legend(handles, labels, loc="upper center", ncol=3)
 plt.tight_layout(rect=[0, 0, 1, 0.95])
 plt.savefig("results/metrics.pdf", bbox_inches="tight")
 
@@ -254,7 +264,7 @@ plt.savefig("results/metrics.pdf", bbox_inches="tight")
 offline_GRU = np.loadtxt("results/GRU/offline.csv", delimiter=",")
 offline_LIN = np.loadtxt("results/LIN/offline.csv", delimiter=",")
 
-fig, ax = plt.subplots(1, 1, figsize=(5,5))
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
 ax.plot(offline_LIN[:, 0], c="k", label="Data", ls="--")
 ax.plot(offline_GRU[:, 1], c=c3, label="GRU")
 ax.plot(offline_LIN[:, 1], c=c2, label="LIN")

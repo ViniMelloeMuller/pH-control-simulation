@@ -1,4 +1,5 @@
 from PID import *
+import numpy as np
 from LIN_model import series_to_supervised
 import pickle
 import time
@@ -11,7 +12,6 @@ with open("models/LIN_model.pkl", "rb") as f:
 def MPC_optimization_Linear(y0, u0, nh, ysp, model=linear_model):
     k = y0.shape[0]
     y = np.copy(y0)
-    y_futuros = np.zeros(nh)
 
     u = np.copy(u0)
 
@@ -19,7 +19,7 @@ def MPC_optimization_Linear(y0, u0, nh, ysp, model=linear_model):
 
     def f_obj(u_futuros, u=u, y=y):
         u1_futuros = u_futuros
-        u2_futuros = np.ones(nh) * u2ss
+        u2_futuros = np.ones(nh) * u[-1, 1]
         u_total = np.vstack((u, np.column_stack((u1_futuros, u2_futuros))))
         y_pred = np.zeros(nh)
         y_total = np.append(y, y_pred)
