@@ -6,7 +6,7 @@ import time
 
 noise_scale = 0.05
 with open("models/LIN_model.pkl", "rb") as f:
-    linear_model = pickle.load(f)
+    linear_model, k = pickle.load(f)
 
 
 def MPC_optimization_Linear(y0, u0, Nc, Np, ysp, model=linear_model):
@@ -32,7 +32,7 @@ def MPC_optimization_Linear(y0, u0, Nc, Np, ysp, model=linear_model):
             y_pred[l - k] = model.predict(model_input)[0]
             y_total[l] = y_pred[l - k]
 
-        Q, R = 1000, 8e-0
+        Q, R = 100, 1
         ISE = Q * np.sum((y_pred - ysp) ** 2)
         EC = R * np.sum((np.diff(u_total[:, 0])) ** 2)
         return ISE + EC
@@ -46,7 +46,8 @@ def MPC_optimization_Linear(y0, u0, Nc, Np, ysp, model=linear_model):
 def main():
     # Linear MPC
     # Control loop - SERVO
-    k = 2
+    with open("models/LIN_model.pkl", "rb") as f:
+        linear_model, k = pickle.load(f)
     t_sim = np.loadtxt("results/PID/PID_servo.csv", delimiter=",")[:, 0]
     dt = t_sim[1] - t_sim[0]
 
@@ -92,7 +93,6 @@ def main():
 
     ############################################################################
 
-    k = 2
     t_sim = np.loadtxt("results/PID/PID_reg.csv", delimiter=",")[:, 0]
     dt = t_sim[1] - t_sim[0]
 
@@ -134,6 +134,7 @@ def main():
     print("RESULTS:")
     IAE = np.sum(np.abs(ysp - Y_lin) * dt)
     EC = np.sum(np.abs(np.diff(U_lin[:, 0])))
+    print(f"IAE={IAE:.2f}\tEC={EC:.2f}")
 
 
 if __name__ == "__main__":

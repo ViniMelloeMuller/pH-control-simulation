@@ -277,9 +277,9 @@ def main():
     import time
 
     dt = 0.5
-    k = 8
+    k = 20
     noise_scale = 0.05
-    t_sim = np.arange(0, 50000 + dt, dt)
+    t_sim = np.arange(0, 75000 + dt, dt)
 
     X_PID = np.zeros((t_sim.shape[0], 2))
     U_PID = np.zeros((t_sim.shape[0], 2))
@@ -360,7 +360,7 @@ def main():
     Y_PID[0] = y_f(X_PID[0], x0=7.0)
     U_PID[:, :] = [u1ss, u2ss]
     for ki in range(t_sim.shape[0]):
-        if ki % int(50 / dt) == 0:
+        if ki % int(100 / dt) == 0:
             U_PID[ki:, 1] = np.random.uniform(low=0.0, high=5.0)
 
     X_PID[0, :] = [Wa, Wb]

@@ -116,6 +116,7 @@ def main():
         MSE_OFFLINE.append(offline_score)
 
     print("DONE")
+
     scores = {
         "ks": ks,
         "MSE_tr": MSEs_treino,
@@ -124,21 +125,28 @@ def main():
         "R2 test": R2_teste,
         "MSE_offline": MSE_OFFLINE,
     }
+
     DataFrame(scores).to_excel(
         "results/LIN/linear_models.xlsx", sheet_name="Linear", index=False
     )
+
+    best_model_index = MSE_OFFLINE.index(min(MSE_OFFLINE))
+    best_model = models[best_model_index]
+    best_k = ks[best_model_index]
+
     # chosen_model = int(input("Digite o Modelo Desejado: "))
     with open("models/LIN_model.pkl", "wb") as f:
-        pickle.dump(models[1], f)
-    print("MODEL SAVED TO DEVICE")
+        pickle.dump((best_model, best_k), f)
+
+    print(f"BEST MODEL WITH k = {best_k} SAVED.")
 
 
 if __name__ == "__main__":
     main()
     with open("models/Lin_model.pkl", "rb") as f:
-        model = pickle.load(f)
+        model, k = pickle.load(f)
 
-    _, data = get_offline_error(2, model)
+    _, data = get_offline_error(k, model)
     np.savetxt("results/LIN/offline.csv", data, delimiter=",")
     plt.plot(data[:, 0], c="k")
     plt.plot(data[:, 1], c="r")

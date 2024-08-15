@@ -1,6 +1,6 @@
-nhidden: 45
-activation1: tanh
+nhidden: 26
+activation1: linear
 window_size: 4
-l1: 1.0811657247330256e-06
-l2: 1.3688564021163353e-06
-dropout_rate: 0.15
+l1: 3.653131436279316e-06
+l2: 2.6399097358810995e-06
+dropout_rate: 0.2
