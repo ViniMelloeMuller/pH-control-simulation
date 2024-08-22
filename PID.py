@@ -279,7 +279,7 @@ def main():
     dt = 0.5
     k = 20
     noise_scale = 0.05
-    t_sim = np.arange(0, 75000 + dt, dt)
+    t_sim = np.arange(0, 85000 + dt, dt)
 
     X_PID = np.zeros((t_sim.shape[0], 2))
     U_PID = np.zeros((t_sim.shape[0], 2))
@@ -289,8 +289,8 @@ def main():
     ysp = np.ones(t_sim.shape[0])
 
     for ki in range(t_sim.shape[0]):
-        if ki % int(150 / dt) == 0:
-            ysp[ki:] = np.random.uniform(low=6.0, high=9.5)
+        if ki % int(300 / dt) == 0:
+            ysp[ki:] = np.random.uniform(low=4.5, high=9.5)
 
     # np.savetxt("ysp2.csv", ysp, delimiter=",");
 

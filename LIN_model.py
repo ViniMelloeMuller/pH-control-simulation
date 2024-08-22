@@ -46,9 +46,7 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
     return agg
 
 
-def get_offline_error(k, model):
-    dt = 0.5
-
+def get_offline_error(k, model, F=None):
     test = dataset_test[200:500]
     t_sim = t2[200:500]
 
@@ -60,7 +58,14 @@ def get_offline_error(k, model):
 
     Y_pred[: k + 1] = Y_off[: k + 1]
 
+    if F is None:
+        F = t_sim.shape[0]
+
     for n in range(k, t_sim.shape[0] - 1):
+
+        if (n - k + 1) % F == 0:
+            Y_pred[n - k + 1: n + 1] = Y_off[n - k + 1 : n + 1]
+
         data_input = np.column_stack((U_off[n - k : n], Y_pred[n - k : n]))
         model_input = series_to_supervised(data_input, n_in=k - 1).values
         Y_pred[n + 1] = model.predict(model_input)[0]

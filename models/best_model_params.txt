@@ -1,6 +1,5 @@
-nhidden: 26
-activation1: linear
-window_size: 4
-l1: 3.653131436279316e-06
-l2: 2.6399097358810995e-06
-dropout_rate: 0.2
+nhidden: 31
+window_size: 10
+l1: 6.287700225938201e-05
+l2: 7.925982284997983e-09
+dr: 0.28
