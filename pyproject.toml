@@ -1,0 +1,24 @@
+[project]
+name = "ph-control-simulation"
+version = "1.1.0"
+description = "Ongoing research at UNICAMP"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "keras>=3.7.0",
+    "matplotlib>=3.10.0",
+    "numpy>=2.0.2",
+    "openpyxl>=3.1.5",
+    "optuna>=4.1.0",
+    "pandas>=2.2.3",
+    "scikit-learn>=1.6.0",
+    "scipy>=1.14.1",
+    "torch>=2.5.1",
+    "tqdm>=4.67.1",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "ipykernel>=6.29.5",
+    "pytest>=8.3.4",
+]
