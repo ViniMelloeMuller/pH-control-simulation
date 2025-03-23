@@ -64,6 +64,8 @@ class PIDController(Controller):
 
         end_time = time.perf_counter()
 
+        u_pid = np.clip(u_pid, 0, 20)
+
         self.action_list.append(u_pid)
         self.computational_time.append(end_time - start_time)
 
