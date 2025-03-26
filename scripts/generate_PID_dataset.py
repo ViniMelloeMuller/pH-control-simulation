@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from src.controllers.PID import PIDController
 from src.systems.system import pHSystem
 
-DATASET_SIZE = int(1e4)  # Number of samples in the dataset
+DATASET_SIZE = int(1e5)  # Number of samples in the dataset
 
 np.random.seed(42)
 
@@ -42,7 +42,7 @@ def main():
         action = np.array([u_pid, system._u2ss])
         system.step(action)
 
-    ax = system.plot(setpoint_list=setpoint_arr)
+    system.plot(setpoint_list=setpoint_arr)
     plt.savefig("results/PID_dataset.png", dpi=800, bbox_inches="tight")
     plt.show()
 

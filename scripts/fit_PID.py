@@ -8,8 +8,6 @@ import json
 import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from src.controllers.PID import PIDController
 from src.systems.system import pHSystem
 
 
@@ -60,7 +58,7 @@ def main():
     system = pHSystem(dt=0.5)
     u_step = system._u1ss + 1.0  # -> unit step
 
-    for t in range(1000):
+    for _ in range(1000):
         system.step(u=np.array([u_step, system._u2ss]))
 
     tfit = np.array(system.data["t"])
